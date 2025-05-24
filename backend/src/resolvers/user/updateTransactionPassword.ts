@@ -21,7 +21,7 @@ export const updateTransactionPassword = async (
     if (!user) {
       res.status(404).json({ error: "User not found" });
     }
-    console.log("REQ>BODY:", req.body);
+
     const { password } = req.body; // Get the new transaction password from the request body
     if (!password) {
       return res

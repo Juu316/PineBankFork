@@ -24,6 +24,16 @@ const Dashboard = () => {
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const currentUserData = context?.currentUserData;
   const { push } = useRouter();
+  useEffect(() => {
+    if (
+      isLoaded &&
+      isSignedIn &&
+      currentUserData &&
+      !currentUserData.userProfile
+    ) {
+      router.push("/user-profile");
+    }
+  }, [isLoaded, isSignedIn, currentUserData, router]);
 
   const selectedAccount = currentUserData?.accounts?.find(
     (account) => account.id === selectedAccountId
@@ -65,7 +75,7 @@ const Dashboard = () => {
     };
 
     loadTransactions();
-  }, [accountNumber]);
+  }, [accountNumber, getToken]);
 
   const handleClickNiit = () => {
     router.push("/dashboard/accounts");
@@ -131,7 +141,7 @@ const Dashboard = () => {
                       width={70}
                       height={70}
                     />
-                    <p className="text-black dark:text-gray-100 text-xl rounded-md w-[4rem]">
+                    <p className="text-black dark:text-gray-100 text-sm rounded-md w-[4rem]">
                       {design.designName}
                     </p>
                   </div>
@@ -193,6 +203,3 @@ const Dashboard = () => {
   );
 };
 export default Dashboard;
-// #323031
-// #fbfffe
-// #f2a65a

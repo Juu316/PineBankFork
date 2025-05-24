@@ -37,6 +37,7 @@ const InactivityHandler = () => {
       if (countdownRef.current) clearInterval(countdownRef.current);
       events.forEach((event) => window.removeEventListener(event, resetTimer));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

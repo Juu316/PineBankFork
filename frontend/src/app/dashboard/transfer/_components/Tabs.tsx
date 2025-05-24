@@ -27,7 +27,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Check, X } from "lucide-react";
 import { formatNumber } from "@/utils/balanceFormat";
 import Image from "next/image";
-//import AccountSelector from "../../_components/AccountSelector";
 import ChooseAccount from "./ChooseAccount";
 
 export const TabsDemo = () => {
@@ -54,7 +53,7 @@ export const TabsDemo = () => {
     toAccountNumber?: string;
     reference?: string;
   }
-  console.log(accountNumber)
+
   const [dataResponse, setDataResponse] = useState<TransactionResponse>({});
   const searchParams = useSearchParams();
   const designId = searchParams.get("designId") || "";
@@ -107,7 +106,6 @@ export const TabsDemo = () => {
 
       if (res.status === 201) {
         const response = res.data.transaction;
-        console.log(response, "response transaction");
         setSuccess("Transaction successful!");
         openDialog();
         setDataResponse(response);
@@ -179,18 +177,13 @@ export const TabsDemo = () => {
   };
   return (
     <div className="min-h-screen h-auto mb-10 w-full max-w-5xl  ">
-      {/* <span className="font-bold text-gray-900 dark:text-white hover:text-green-600">
-        Гүйлгээ
-      </span> */}
       <Tabs
         defaultValue="account"
-        className="flex xl:flex-col mt-1 lg:gap-6 2xl:gap-12 w-full justify-center items-center"
-      >
+        className="flex xl:flex-col mt-1 lg:gap-6 2xl:gap-12 w-full justify-center items-center">
         <div className="flex-1 w-4/5 mx-5 max-md:w-[320px]">
           <TabsContent
             className="shadow-2xl rounded-lg bg-white dark:bg-gray-900"
-            value="account"
-          >
+            value="account">
             <div className="flex flex-col gap-8 items-center">
               <CardHeader className="bg-black w-full h-[104px]  rounded-t-lg">
                 <CardTitle className="text-white text-xs mt-5">
@@ -205,8 +198,7 @@ export const TabsDemo = () => {
                 <div className="space-y-2 mb-2">
                   <Label
                     htmlFor="from-account"
-                    className="font-medium text-gray-700 dark:text-gray-300 text-xs"
-                  >
+                    className="font-medium text-gray-700 dark:text-gray-300 text-xs">
                     <span className="text-red-600">*</span> Шилжүүлэх дансаа
                     сонгох
                   </Label>
@@ -219,8 +211,7 @@ export const TabsDemo = () => {
                 <div className="space-y-2">
                   <Label
                     htmlFor="to-account"
-                    className="font-medium text-gray-700 dark:text-gray-300 text-xs"
-                  ></Label>
+                    className="font-medium text-gray-700 dark:text-gray-300 text-xs"></Label>
                   <GetProfileInput
                     setToAccountId={setToAccountId}
                     accountNumber={accountNumber}
@@ -237,8 +228,7 @@ export const TabsDemo = () => {
                 <div className="space-y-2">
                   <Label
                     htmlFor="amount"
-                    className="font-medium text-gray-700 dark:text-gray-300 text-xs"
-                  >
+                    className="font-medium text-gray-700 dark:text-gray-300 text-xs">
                     <span className="text-red-600">*</span> Гүйлгээний дүн
                   </Label>
                   <input
@@ -251,8 +241,7 @@ export const TabsDemo = () => {
                 <div className="space-y-2">
                   <Label
                     htmlFor="reference"
-                    className="font-medium text-gray-700 dark:text-gray-300 text-xs"
-                  >
+                    className="font-medium text-gray-700 dark:text-gray-300 text-xs">
                     <span className="text-red-600">*</span> Гүйлгээний утга
                   </Label>
                   <input
@@ -267,8 +256,7 @@ export const TabsDemo = () => {
                 <div className="space-y-2">
                   <Label
                     htmlFor="transaction-password"
-                    className="font-medium text-gray-700 dark:text-gray-300 text-xs"
-                  >
+                    className="font-medium text-gray-700 dark:text-gray-300 text-xs">
                     <span className="text-red-600">*</span> Гүйлгээний нууц үг
                   </Label>
                   <input
@@ -292,8 +280,7 @@ export const TabsDemo = () => {
                     setToAccountId(null);
                     setTransactionPassword("");
                   }}
-                  disabled={loading}
-                >
+                  disabled={loading}>
                   {loading ? "Шинэчлэл хийгдлээ" : "Шинэчлэх"}
                 </Button>
                 <Button
@@ -301,12 +288,11 @@ export const TabsDemo = () => {
                   className="w-full sm:w-1/2 xs:w-auto xs:flex-1 h-10 text-[15px] text-white bg-black dark:bg-green-700 shadow duration-400 hover:bg-[var(--foreground)]/60 dark:hover:opacity-75 cursor-pointer transition rounded-md sm:rounded-2xl font-semibold"
                   onClick={() => {
                     createTransaction();
-                    if (accountNumber.length===10) {
+                    if (accountNumber.length === 10) {
                       createDesign();
                     }
                   }}
-                  disabled={loading}
-                >
+                  disabled={loading}>
                   {loading ? "Гүйлгээ хийгдэж байна" : "Гүйлгээ хийх"}
                 </Button>
                 <Dialog
@@ -319,7 +305,6 @@ export const TabsDemo = () => {
                   }}>
                   <DialogContent className="p-8 dark:bg-gray-700 bg-secondary rounded-lg shadow-lg w-[400px] flex flex-col items-center">
                     <DialogTitle className="w-full flex flex-col gap-3 justify-center items-center font-semibold text-center bg-white dark:bg-gray-600 p-4 rounded-xl">
-
                       {success ? (
                         <Check className="bg-green-500 text-white w-10 h-10 rounded-full shadow-lg" />
                       ) : (
@@ -354,8 +339,7 @@ export const TabsDemo = () => {
                           <Button
                             type="button"
                             variant="secondary"
-                            className="w-full bg-secondary hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2"
-                          >
+                            className="w-full bg-secondary hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 mt-2">
                             хаах
                           </Button>
                         </DialogClose>
@@ -363,7 +347,6 @@ export const TabsDemo = () => {
                     </DialogTitle>
                     {success && (
                       <div className="w-full flex flex-col gap-3 mt-4">
-                        {/* Recipient Card */}
                         <div className="bg-white dark:bg-gray-600 w-full p-4 rounded-xl shadow  ">
                           <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">
                             Хүлээн авагч
@@ -386,7 +369,7 @@ export const TabsDemo = () => {
                             />
                           </div>
                         </div>
-                        {/* Reference Card */}
+
                         <div className="bg-white dark:bg-gray-600 w-full p-4 rounded-xl shadow border border-gray-200 dark:border-gray-700">
                           <p className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">
                             Гүйлгээний утга

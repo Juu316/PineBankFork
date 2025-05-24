@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-// import CloudinaryUploader from "@/components/ui/cloudninaryUploader";
 import { profileSchema } from "@/validation/profileSchema";
 import { useAuth } from "@clerk/nextjs";
 import { useUser as useClerkUser } from "@clerk/nextjs";
@@ -16,6 +15,7 @@ import { updateUserProfile } from "@/lib/profileActions";
 import { CurrentUser } from "@/context/currentUserContext";
 import { getUserProfile } from "@/lib/api";
 import { useSidebar } from "@/context/sidebarContext";
+import { axiosInstance } from "@/lib/addedAxiosInstance";
 const ProfilePage = () => {
   const { setSelectedSidebar } = useSidebar();
   const [firstName, setFirstName] = useState("");
@@ -26,7 +26,6 @@ const ProfilePage = () => {
   const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
-  // const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { getToken } = useAuth();
@@ -48,7 +47,6 @@ const ProfilePage = () => {
         setLastName(profile.lastName);
         setPhone(profile.phone);
         setAddress(profile.address);
-        // setImage(profile.image);
       } catch (error) {
         console.error(
           "Error fetching profile data:",
@@ -66,7 +64,6 @@ const ProfilePage = () => {
       lastName,
       phone,
       address,
-      // image,
     });
 
     if (!result.success) {
@@ -107,7 +104,6 @@ const ProfilePage = () => {
       const result = await updateUserProfile(profileId, token, {
         phone,
         address,
-        // image,
       });
 
       if (result.success) {
@@ -192,7 +188,7 @@ const ProfilePage = () => {
   ) => {
     const value = e.target.value;
     setTypedCurrentPassword(value);
-    console.log(typedCurrentPassword);
+   
   };
   useEffect(() => {
     if (currentTransactionPassword !== typedCurrentPassword) {
@@ -203,7 +199,7 @@ const ProfilePage = () => {
     } else {
       setOldPasswordMatchingError("");
     }
-  }, [handleTypedCurrentPassword]);
+  }, [currentTransactionPassword, typedCurrentPassword]);
   useEffect(() => {
     if (
       oldPasswordMatchingError == "" &&
@@ -215,9 +211,11 @@ const ProfilePage = () => {
       setAllPasswordValid(true);
     }
   }, [
-    handleTypedCurrentPassword,
-    handlePasswordChange,
-    handleConfirmPasswordChange,
+    oldPasswordMatchingError,
+    matchingError,
+    validatingError,
+    password.length,
+    confirmPassword.length,
   ]);
   const handlePasswordUpdate = async () => {
     try {
@@ -227,18 +225,17 @@ const ProfilePage = () => {
         console.log("No token available");
         return;
       }
-      const response = await fetch(
-        "https://pinebank.onrender.com/users/transaction-password/update",
+      const response = await axiosInstance.put(
+        `/users/transaction-password/update`,
+        { userId: userId, password },
         {
-          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ userId: userId, password }),
         }
       );
-      if (response.ok) {
+      if (response.status >= 200 && response.status < 300) {
         toast("Нууц үг амжилттай шинэчлэгдлээ!", {
           position: "bottom-left",
           autoClose: 5000,
@@ -253,8 +250,9 @@ const ProfilePage = () => {
         setTypedCurrentPassword("");
         setConfirmPassword("");
       } else {
-        const data = await response.json();
-        console.log(data.message || "Нууц үг шинэчлэхэд алдаа гарлаа.");
+        console.log(
+          response.data?.message || "Нууц үг шинэчлэхэд алдаа гарлаа."
+        );
       }
     } catch (error) {
       console.log("Error:", error);
@@ -363,10 +361,6 @@ const ProfilePage = () => {
           </TabsContent>
           <TabsContent value="profile">
             <form onSubmit={handleProfileUpdate} className="space-y-6">
-              {/* <div className="flex justify-start gap-5 mb-6">
-                <CloudinaryUploader image={image} setImage={setImage} />
-              </div> */}
-
               <div className="text-black dark:text-white text-xl font-medium">
                 Тавтай морилно уу, {user?.username}
               </div>

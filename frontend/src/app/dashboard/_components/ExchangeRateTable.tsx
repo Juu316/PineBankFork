@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-const API_KEY = "bc681a7b9fead6fa4597ec00";
+import { axiosInstance } from "@/lib/addedAxiosInstance";
 
 const currencyList = [
   { code: "USD", name: "АМЕРИК ДОЛЛАР" },
@@ -26,38 +25,18 @@ const formatNumber = (value: number) =>
 export default function MNTExchangeTable() {
   const [rates, setRates] = useState<Record<string, number> | null>(null);
   const [date, setDate] = useState<string>("");
-
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        const ratesData: Record<string, number> = {};
-
-        for (const { code } of currencyList) {
-          const pairAPI_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/pair/MNT/${code}`;
-          const res = await fetch(pairAPI_URL);
-          const data = await res.json();
-
-          if (data.result === "success") {
-            ratesData[code] = 1 / data.conversion_rate;
-          } else {
-            ratesData[code] = 0;
-            console.error(`Error fetching rate for ${code}`);
-          }
-        }
-
-        setRates(ratesData);
-
-        const currentDate = new Date();
-        setDate(
-          `${currentDate.getFullYear()}.${String(
-            currentDate.getMonth() + 1
-          ).padStart(2, "0")}.${String(currentDate.getDate()).padStart(2, "0")}`
-        );
+        const res = await axiosInstance.get("/exchange");
+        console.log(res.data);
+        console.log(typeof res.data);
+        setRates(res.data.rates);
+        setDate(res.data.lastUpdated);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        console.error("Error fetching exchange rates:", err);
       }
     };
-
     fetchRates();
   }, []);
 

@@ -1,4 +1,3 @@
-// lib/useHasMounted.ts
 import { useEffect, useState } from "react";
 
 export const useHasMounted = () => {

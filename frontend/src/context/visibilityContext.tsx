@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface VisibilityContextProps {
   isVisible: boolean;
@@ -12,7 +12,17 @@ const VisibilityContext = createContext<VisibilityContextProps | undefined>(
 export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("isVisible");
+      return stored === null ? true : stored === "true";
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isVisible", String(isVisible));
+  }, [isVisible]);
 
   const toggleVisibility = () => {
     setIsVisible((prev) => !prev);

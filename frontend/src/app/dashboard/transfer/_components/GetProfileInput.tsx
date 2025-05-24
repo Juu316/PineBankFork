@@ -9,12 +9,18 @@ type GetProfileInputProps = {
   accountNumber: string;
   setAccountNumber: (accountNumber: string) => void;
   setToAccountId: (toAccountId: string) => void;
-  fullName:string;
-  setFullName:(fullName: string) => void;
+  fullName: string;
+  setFullName: (fullName: string) => void;
 };
 
 const GetProfileInput = (props: GetProfileInputProps) => {
-  const {fullName, setFullName, accountNumber, setAccountNumber, setToAccountId } = props;
+  const {
+    fullName,
+    setFullName,
+    accountNumber,
+    setAccountNumber,
+    setToAccountId,
+  } = props;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -48,6 +54,7 @@ const GetProfileInput = (props: GetProfileInputProps) => {
     if (accountNumber.length === 10) {
       getProfile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountNumber]);
 
   if (loading) {
@@ -62,8 +69,7 @@ const GetProfileInput = (props: GetProfileInputProps) => {
     <div className="flex flex-col gap-5">
       <label
         htmlFor="accountNumber"
-        className="font-medium text-gray-700 text-xs mt-2 flex gap-1"
-      >
+        className="font-medium text-gray-700 text-xs mt-2 flex gap-1">
         <p className="text-red-700">*</p>
         Хүлээн авагчийн данс
       </label>
@@ -85,8 +91,7 @@ const GetProfileInput = (props: GetProfileInputProps) => {
 
       <label
         htmlFor="fullName"
-        className="font-medium text-gray-700 text-xs mt-2 flex gap-1"
-      >
+        className="font-medium text-gray-700 text-xs mt-2 flex gap-1">
         <p className="text-red-700">*</p>
         Хүлээн авагчийн нэр
       </label>

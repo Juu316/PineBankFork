@@ -43,10 +43,10 @@ const Page = () => {
 
   useEffect(() => {
     const getTransactionInfo = async () => {
-      if (!accountNumber) {
-        setError("Account not found.");
-        return;
-      }
+      // if (!accountNumber) {
+      //   setError("Account not found.");
+      //   return;
+      // }
       setLoading(true);
       try {
         const response = await axiosInstance.post<{
@@ -125,7 +125,7 @@ const Page = () => {
     return <div>Account not found</div>;
   }
   return (
-    <div className="flex flex-col h-full max-w-6xl mx-auto px-2 sm:px-4 md:px-8">
+    <div className="flex flex-col min-h-screen max-w-6xl mx-auto px-2 sm:px-4 md:px-8">
       {/* Top bar: account selector and PDF */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between w-full gap-2 sm:gap-3 p-2 sm:p-4 mt-6 sm:mt-10 bg-secondary rounded-2xl">
         <ChooseAccountWithId

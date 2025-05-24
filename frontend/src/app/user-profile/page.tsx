@@ -1,17 +1,16 @@
 "use client";
-
+import { getUserProfile } from "@/lib/api";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BackgroundBeams } from "@/components/ui/backgroundBeams";
-// import Cloudinary from "@/components/ui/cloudinaryWidget";
 import { profileSchema } from "@/validation/profileSchema";
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@/context/userContext";
 import { createBankAccount, createProfile } from "@/lib/api";
-import { useCurrent } from "@/context/currentUserContext";
+import { axiosInstance } from "@/lib/addedAxiosInstance";
 const Page = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const { isLoaded, isSignedIn } = useAuth();
@@ -23,7 +22,6 @@ const Page = () => {
   const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
-  // const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
@@ -31,20 +29,24 @@ const Page = () => {
   const router = useRouter();
   const { getToken } = useAuth();
   const { userId } = useUser();
-  const { currentUserData } = useCurrent();
 
-  console.log("CUrrent user data:", currentUserData);
   useEffect(() => {
-    // If user is signed in and already has a profile, redirect
-    const parsedUserData =
-      typeof currentUserData === "string"
-        ? JSON.parse(currentUserData)
-        : currentUserData;
-    if (parsedUserData?.id == parsedUserData?.userProfile?.userId) {
-      router.replace("/dashboard");
-    }
-    console.log("CUrrent user data:", currentUserData);
-  }, [userId, currentUserData, router]);
+    const checkProfile = async () => {
+      if (!isLoaded || !isSignedIn) return;
+      try {
+        const token = await getToken();
+        if (!token) return;
+        const profile = await getUserProfile(token);
+        if (profile) {
+          router.replace("/dashboard");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    checkProfile();
+  }, [isLoaded, isSignedIn, getToken, router]);
+
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
     }
@@ -85,23 +87,16 @@ const Page = () => {
         console.log("No token available");
         return;
       }
-      await fetch(
-        "https://pinebank.onrender.com/users/transaction-password/update",
+      await axiosInstance.put(
+        `/users/transaction-password/update`,
+        { userId: userId, password },
         {
-          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ userId: userId, password }),
         }
       );
-      // if (response.ok) {
-      //   setPassword("");
-      // } else {
-      //   const data = await response.json();
-      //   console.log(data.message || "Нууц үг шинэчлэхэд алдаа гарлаа.");
-      // }
     } catch (error) {
       console.log("Error:", error);
     }
@@ -112,7 +107,6 @@ const Page = () => {
       lastName,
       phone,
       address,
-      // image,
     });
 
     if (!result.success) {
@@ -142,7 +136,6 @@ const Page = () => {
       if (!token) throw new Error("Token not found");
 
       await createProfile(token, {
-        // image,
         firstName,
         lastName,
         phone,
@@ -170,12 +163,6 @@ const Page = () => {
         <h3 className="text-2xl font-semibold text-center mb-8 text-gray-800 ">
           Хэрэглэгч үүсгэх хэсэг
         </h3>
-
-        {/** <div className="flex justify-center mb-8">
-          <div className="flex justify-center items-center w-40 h-40 rounded-full bg-white mt-6 border-2 border-gray-400 border-dotted relative">
-            <Cloudinary image={image} setImage={setImage} />
-          </div>
-        </div>*/}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -274,6 +261,9 @@ const Page = () => {
               className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:pl-6 peer-focus:pl-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
               Утасны дугаар
             </label>
+            {/* <label htmlFor="floating-phone-number" className="">
+              Утасны дугаар
+            </label> */}
           </div>
 
           {phoneError && (

@@ -1,36 +1,38 @@
+import { axiosInstance } from "@/lib/addedAxiosInstance";
+
 export const updateUserProfile = async (
   profileId: string,
   token: string,
   profileData: { phone: string; address: string }
 ): Promise<{ success: boolean; message?: string }> => {
   try {
-    const response = await fetch(
-      `https://pinebank.onrender.com/profile/${profileId}`,
+    const response = await axiosInstance.put(
+      `/profile/${profileId}`,
+      profileData,
       {
-        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(profileData),
       }
     );
 
-    const data = await response.json();
-
-    if (response.ok) {
+    if (response.status >= 200 && response.status < 300) {
       return { success: true };
     } else {
       return {
         success: false,
-        message: data.message || "An error occurred while updating profile.",
+        message:
+          response.data?.message || "An error occurred while updating profile.",
       };
     }
-  } catch (err) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     return {
       success: false,
       message:
-        err instanceof Error ? err.message : "An unexpected error occurred.",
+        err.response?.data?.message ||
+        (err instanceof Error ? err.message : "An unexpected error occurred."),
     };
   }
 };

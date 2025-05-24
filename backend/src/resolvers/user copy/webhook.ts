@@ -1,4 +1,4 @@
-// End CreateUser, DeleteUser baigaa
+// End CreateUser, DeleteUser functionuud baigaa
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 const prisma = new PrismaClient();

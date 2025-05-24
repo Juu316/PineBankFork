@@ -8,7 +8,7 @@ import { UserProvider } from "@/context/userContext";
 import { CurrentUserProvider } from "@/context/currentUserContext";
 import { ToastContainer } from "react-toastify";
 import { SidebarProvider } from "@/context/sidebarContext";
-// Configure fonts
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

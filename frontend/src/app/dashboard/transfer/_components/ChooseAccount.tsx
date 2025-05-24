@@ -28,7 +28,7 @@ const ChooseAccount = (props: ChooseAccountProps) => {
     ) {
       setSelectedAccountId(currentUserData.accounts[0].id);
     }
-  }, [currentUserData]);
+  }, [currentUserData, setSelectedAccountId]);
 
   if (!context || !context.currentUserData) {
     return <div>...Loading</div>;
@@ -51,7 +51,7 @@ const ChooseAccount = (props: ChooseAccountProps) => {
           <div className="flex justify-between items-center gap-1 w-full">
             <div className="flex flex-col">
               <div className="text-[10px]  sm:text-sm font-semibold">
-                ХАРИЛЦАХ / PINE / MNT
+                ХАРИЛЦАХ / PINE
               </div>
               <span className="text-[10px] sm:text-sm font-semibold text-gray-500 block">
                 MN{" "}
@@ -91,10 +91,9 @@ const ChooseAccount = (props: ChooseAccountProps) => {
               <div className="flex justify-between items-center w-full mr-6">
                 <div className="flex flex-col text-[10px] sm:text-sm">
                   <div className="text-[10px] sm:text-sm font-semibold">
-                    ХАРИЛЦАХ / PINE / MNT
+                    ХАРИЛЦАХ / PINE
                   </div>
                   <span className="text-[10px] sm:text-sm font-semibold text-gray-500 block">
-
                     {account.accountNumber}
                   </span>
                 </div>
@@ -118,7 +117,7 @@ const ChooseAccount = (props: ChooseAccountProps) => {
     //     {selectedAccountId ? (
     //       <div className="flex justify-between items-center w-full">
     //         <div className="flex flex-col justify-between w-full">
-    //           <div className="text-sm font-semibold">ХАРИЛЦАХ / PINE / MNT</div>
+    //           <div className="text-sm font-semibold">ХАРИЛЦАХ / PINE </div>
     //           <span className="text-sm font-semibold text-gray-500 block">
     //             MN{" "}
     //             {
@@ -159,7 +158,7 @@ const ChooseAccount = (props: ChooseAccountProps) => {
     //           <div className="w-full flex justify-between items-center">
     //             <div>
     //               <div className="text-sm font-semibold">
-    //                 ХАРИЛЦАХ / PINE / MNT
+    //                 ХАРИЛЦАХ / PINE
     //               </div>
     //               <span className="text-sm font-semibold text-gray-500 block">
     //                 MN {account.accountNumber}

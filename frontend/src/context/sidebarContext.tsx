@@ -12,7 +12,7 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
-  // Set initial value based on path
+
   let initialSidebar = "";
   if (pathname?.includes("/transfer")) {
     initialSidebar = "Гүйлгээ";

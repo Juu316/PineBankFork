@@ -24,8 +24,8 @@ export const downloadPDF = (transactions: TransactionType[]) => {
   doc.setFillColor(230, 230, 230); // light grey background
   doc.rect(margin, y, 170, 10, "F");
   doc.text("Reference", margin + 2, y + 7);
-  doc.text("Amount (T)", margin + 65, y + 7);
-  doc.text("Balance (T)", margin + 130, y + 7);
+  doc.text("Amount (₮)", margin + 65, y + 7);
+  doc.text("Balance (₮)", margin + 130, y + 7);
   y += 12;
 
   // Table Rows
@@ -44,8 +44,8 @@ export const downloadPDF = (transactions: TransactionType[]) => {
       doc.rect(margin, y - 2, 170, 10, "F");
     }
 
-    doc.text(`${transaction.amount}T`, margin + 65, y + 5);
-    doc.text(`${transaction.runningBalance}T`, margin + 130, y + 5);
+    doc.text(`${transaction.amount}₮`, margin + 65, y + 5);
+    doc.text(`${transaction.runningBalance}₮`, margin + 130, y + 5);
     doc.text(transaction.reference, margin + 2, y + 5);
 
     y += 10;

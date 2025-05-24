@@ -1,5 +1,5 @@
 "use client";
-
+import { useCallback } from "react";
 import { User } from "@/app/types";
 import { axiosInstance } from "@/lib/addedAxiosInstance";
 import { useAuth } from "@clerk/nextjs";
@@ -26,7 +26,7 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
 
   const { getToken, isLoaded, isSignedIn } = useAuth();
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     const token = await getToken();
 
     if (!token) {
@@ -44,17 +44,16 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
         setError(err.response?.data.message || "Unknown error");
       }
     }
-  };
+  }, [getToken]);
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       getUserData();
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, getUserData]);
   return (
     <CurrentUser.Provider
-      value={{ error, currentUserData, setCurrentUserData }}
-    >
+      value={{ error, currentUserData, setCurrentUserData }}>
       {children}
     </CurrentUser.Provider>
   );

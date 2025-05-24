@@ -30,7 +30,7 @@ const AccountSelector = (props: ChooseAccountProps) => {
     ) {
       setSelectedAccountId(currentUserData.accounts[0].id);
     }
-  }, [currentUserData]);
+  }, [currentUserData, setSelectedAccountId]);
 
   if (!context || !context.currentUserData) {
     return (
@@ -64,7 +64,7 @@ const AccountSelector = (props: ChooseAccountProps) => {
         {selectedAccountId ? (
           <div className="flex justify-between items-center gap-1 w-full">
             <div className="flex flex-col">
-              <div className="text-sm font-semibold">ХАРИЛЦАХ / PINE / MNT</div>
+              <div className="text-sm font-semibold">ХАРИЛЦАХ / PINE </div>
               <span className="text-sm font-semibold text-gray-500 block">
                 MN{" "}
                 {
@@ -102,9 +102,7 @@ const AccountSelector = (props: ChooseAccountProps) => {
               value={account.id}>
               <div className="flex justify-between items-center w-full mr-6">
                 <div className="flex flex-col">
-                  <div className="text-sm font-semibold">
-                    ХАРИЛЦАХ / PINE / MNT
-                  </div>
+                  <div className="text-sm font-semibold">ХАРИЛЦАХ / PINE</div>
                   <span className="text-sm font-semibold text-gray-500 block">
                     {account.accountNumber}
                   </span>

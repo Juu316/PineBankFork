@@ -1,28 +1,21 @@
+import { axiosInstance } from "@/lib/addedAxiosInstance";
 export const fetchTransactions = async (
   accountNumber: string,
   token: string
 ) => {
   try {
-    const response = await fetch(
-      "https://pinebank.onrender.com/transaction/get",
+    const response = await axiosInstance.post(
+      `/transaction/get`,
+      { accountNumber },
       {
-        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ accountNumber }),
       }
     );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Transaction fetch failed:", errorText);
-      throw new Error(errorText);
-    }
-
-    const data = await response.json();
-    return data.transactions;
+    return response.data.transactions;
   } catch (error) {
     console.error("Error fetching transactions:", error);
     throw error;
@@ -31,20 +24,14 @@ export const fetchTransactions = async (
 
 export const getUserProfile = async (token: string) => {
   try {
-    const response = await fetch("https://pinebank.onrender.com/users", {
-      method: "GET",
+    const response = await axiosInstance.get(`/users`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (!response.ok) {
-      throw new Error(await response.text());
-    }
-
-    const data = await response.json();
-    return data.user.userProfile;
+    return response.data.user.userProfile;
   } catch (error) {
     console.error("Error fetching transactions:", error);
     throw error;
@@ -62,37 +49,39 @@ export const createProfile = async (
     userId: string;
   }
 ) => {
-  const response = await fetch("https://pinebank.onrender.com/profile", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(userProfile),
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(errText || "Failed to create profile");
+  try {
+    const response = await axiosInstance.post(`/profile`, userProfile, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errText =
+      error.response?.data || error.message || "Failed to create profile";
+    throw new Error(errText);
   }
-
-  return response.json();
 };
 
 export const createBankAccount = async (token: string) => {
-  const response = await fetch("https://pinebank.onrender.com/account", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ balance: 10000 }),
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(errText || "Failed to create bank account");
+  try {
+    const response = await axiosInstance.post(
+      `/account`,
+      { balance: 10000 },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errText =
+      error.response?.data || error.message || "Failed to create bank account";
+    throw new Error(errText);
   }
-
-  return response.json();
 };

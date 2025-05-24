@@ -22,8 +22,6 @@ export const CreateDesign = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { getToken } = useAuth();
 
-  console.log(toAccountNumber);
-  console.log(design);
 
   const createDesign = async () => {
     const token = await getToken();

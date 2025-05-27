@@ -3,7 +3,18 @@ import cron from "node-cron";
 
 const API_KEY = process.env.EXCHANGE_API_KEY;
 const currencyList = [
-  "USD", "EUR", "JPY", "CHF", "GBP", "CNY", "KRW", "HKD", "CAD", "AUD", "SGD", "NZD"
+  "USD",
+  "EUR",
+  "JPY",
+  "CHF",
+  "GBP",
+  "CNY",
+  "KRW",
+  "HKD",
+  "CAD",
+  "AUD",
+  "SGD",
+  "NZD",
 ];
 
 let cachedRates: Record<string, number> = {};
@@ -40,7 +51,7 @@ const fetchAndCacheRates = async () => {
 };
 
 // Fetch immediately on server start
-fetchAndCacheRates();
+// fetchAndCacheRates();
 
-// Schedule to fetch every 6 hours
-cron.schedule("0 */6 * * *", fetchAndCacheRates);
+// Schedule to fetch every 23 hours
+cron.schedule("0 */23 * * *", fetchAndCacheRates);

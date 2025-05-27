@@ -1,5 +1,3 @@
-// src/types/account.ts
-
 export type BankAccountType = {
   id: number;
   accountNumber: string;
@@ -15,4 +13,5 @@ export type TransactionType = {
   amount: number;
   reference: string | null;
   timestamp: Date;
+  balanceAfterTransaction: number | null;
 };

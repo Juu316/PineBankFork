@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   CardContent,
@@ -23,7 +22,7 @@ import {
 import { CurrentUser } from "@/context/currentUserContext";
 import { SwitchDemo } from "./SwitchSave";
 import { useAuth } from "@clerk/nextjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Check, X } from "lucide-react";
 import { formatNumber } from "@/utils/balanceFormat";
 import Image from "next/image";
@@ -57,7 +56,6 @@ export const TabsDemo = () => {
   const [dataResponse, setDataResponse] = useState<TransactionResponse>({});
   const searchParams = useSearchParams();
   const designId = searchParams.get("designId") || "";
-  const { push } = useRouter();
   const selectedDesign = currentUserData?.designs.find(
     (design) => design.id === designId
   );
@@ -84,13 +82,11 @@ export const TabsDemo = () => {
       openDialog();
       return;
     }
-
     if (transactionPassword !== userTransactionPassword) {
       setError("Гүйлгээний нууц үг буруу байна.");
       openDialog();
       return;
     }
-
     setLoading(true);
     setError("");
 
@@ -103,10 +99,10 @@ export const TabsDemo = () => {
         transactionPassword,
       };
       const res = await axiosInstance.post("/transaction", transaction);
-
       if (res.status === 201) {
         const response = res.data.transaction;
         setSuccess("Transaction successful!");
+
         openDialog();
         setDataResponse(response);
       }
@@ -128,13 +124,11 @@ export const TabsDemo = () => {
       openDialog();
       return;
     }
-
     if (!design || design === "") {
       return;
     }
     setLoading(true);
     setError("");
-
     try {
       const saveDesign = {
         toAccountNumber: accountNumber,
@@ -176,7 +170,7 @@ export const TabsDemo = () => {
     return amount.toLocaleString();
   };
   return (
-    <div className="min-h-screen h-auto mb-10 w-full max-w-5xl  ">
+    <div className="min-h-screen h-auto mb-10 w-full max-w-5xl">
       <Tabs
         defaultValue="account"
         className="flex xl:flex-col mt-1 lg:gap-6 2xl:gap-12 w-full justify-center items-center">
@@ -193,7 +187,6 @@ export const TabsDemo = () => {
                   PINE БАНКНЫ ДАНС РУУ
                 </CardDescription>
               </CardHeader>
-              {/* ////////////////////////////////////////////////// */}
               <CardContent className="space-y-6 px-6 pb-2 w-full">
                 <div className="space-y-2 mb-2">
                   <Label
@@ -300,7 +293,7 @@ export const TabsDemo = () => {
                   onOpenChange={(open) => {
                     setIsDialogOpen(open);
                     if (!open && success) {
-                      push("/dashboard");
+                      window.location.reload();
                     }
                   }}>
                   <DialogContent className="p-8 dark:bg-gray-700 bg-secondary rounded-lg shadow-lg w-[400px] flex flex-col items-center">

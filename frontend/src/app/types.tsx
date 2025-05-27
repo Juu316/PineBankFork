@@ -22,11 +22,11 @@ export type Accounts = {
 };
 
 export type Designs = {
-id:string,
-designName:string,
-toAccountNumber:string
-toAccountId:string
-}
+  id: string;
+  designName: string;
+  toAccountNumber: string;
+  toAccountId: string;
+};
 
 export type User = {
   id: number;
@@ -34,7 +34,7 @@ export type User = {
   email: string;
   profile?: ProfileDetail;
   accounts?: Accounts[] | [];
-  designs: Designs[]
+  designs: Designs[];
   transactionPassword?: string;
   userProfile: string;
 };
@@ -48,4 +48,12 @@ export type TransactionType = {
   runningBalance: number;
   fromAccountId: string;
   toAccountId: string;
+  balanceAfterTransaction: number;
 };
+// export interface Design {
+//   id: string;
+//   toAccountNumber: string;
+//   designName: string;
+//   createdAt: string;
+//   updatedAt: string;
+// }

@@ -75,9 +75,9 @@ export const createTransaction = async (req: Request, res: Response) => {
         transaction: {
           toAccountNumber: toAccount?.accountNumber,
           fromAccountNumber: fromAccount?.accountNumber,
-          amount:transaction.amount,
-          timestamp:transaction.timestamp,
-          reference:transaction.reference
+          amount: transaction.amount,
+          timestamp: transaction.timestamp,
+          reference: transaction.reference,
         },
       });
     }

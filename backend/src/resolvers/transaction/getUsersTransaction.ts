@@ -14,7 +14,9 @@ export const getTransaction = async (
 
     if (!userId) {
       console.log("User ID is missing");
-      return res.status(400).json({ message: "User ID is missing from the token" });
+      return res
+        .status(400)
+        .json({ message: "User ID is missing from the token" });
     }
 
     if (!accountNumber) {
@@ -27,21 +29,24 @@ export const getTransaction = async (
     });
 
     if (!user || !user.accounts.length) {
-      return res.status(404).json({ message: "No bank accounts found for user" });
+      return res
+        .status(404)
+        .json({ message: "No bank accounts found for user" });
     }
 
-    const account = user.accounts.find(acc => acc.accountNumber === accountNumber);
+    const account = user.accounts.find(
+      (acc) => acc.accountNumber === accountNumber
+    );
 
     if (!account) {
-      return res.status(404).json({ message: "Account not found for this user" });
+      return res
+        .status(404)
+        .json({ message: "Account not found for this user" });
     }
 
     const transactions = await prisma.transaction.findMany({
       where: {
-        OR: [
-          { fromAccountId: account.id },
-          { toAccountId: account.id },
-        ],
+        OR: [{ fromAccountId: account.id }, { toAccountId: account.id }],
       },
       orderBy: {
         timestamp: "asc",
@@ -68,7 +73,7 @@ export const getTransaction = async (
         reference: tx.reference,
         type: isCredit ? "CREDIT" : "DEBIT",
         fromAccountId: tx.fromAccountId,
-        toAccountId: tx.toAccountId,     
+        toAccountId: tx.toAccountId,
         runningBalance,
       };
 

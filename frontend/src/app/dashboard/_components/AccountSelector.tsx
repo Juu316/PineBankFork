@@ -66,7 +66,7 @@ const AccountSelector = (props: ChooseAccountProps) => {
             <div className="flex flex-col">
               <div className="text-sm font-semibold">ХАРИЛЦАХ / PINE </div>
               <span className="text-sm font-semibold text-gray-500 block">
-                MN{" "}
+                MN
                 {
                   accounts.find((acc) => acc.id === selectedAccountId)
                     ?.accountNumber
@@ -80,7 +80,7 @@ const AccountSelector = (props: ChooseAccountProps) => {
                     accounts.find((acc) => acc.id === selectedAccountId)
                       ?.balance
                   ) || 0
-                )}{" "}
+                )}
                 MNT
               </span>
             ) : (

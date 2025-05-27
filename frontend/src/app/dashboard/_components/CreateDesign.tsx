@@ -13,8 +13,13 @@ import { Label } from "@/components/ui/label";
 import { axiosInstance } from "@/lib/addedAxiosInstance";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
+import { Designs } from "@/app/types";
 
-export const CreateDesign = () => {
+interface CreateDesignProps {
+  setDesigns: React.Dispatch<React.SetStateAction<Designs[]>>;
+}
+
+export const CreateDesign = ({ setDesigns }: CreateDesignProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [toAccountNumber, setToAccountNumber] = useState("");
@@ -22,20 +27,16 @@ export const CreateDesign = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { getToken } = useAuth();
 
-
   const createDesign = async () => {
     const token = await getToken();
-
     if (!toAccountNumber) {
       setError("Хүлээн авагчийн данс хоосон байна.");
       return;
     }
-
     if (!design) {
       setError("Загварын нэр хоосон байна.");
       return;
     }
-
     setLoading(true);
     setError("");
 
@@ -44,17 +45,20 @@ export const CreateDesign = () => {
         toAccountNumber,
         designName: design,
       };
-
       const res = await axiosInstance.post("/design", saveDesign, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       if (res.status === 201) {
-        if (res.status === 201) {
-          setIsDialogOpen(false);
-          setToAccountNumber("");
-          setDesign("");
-        }
+        // Refresh designs list
+        const currentUserData = JSON.parse(
+          localStorage.getItem("currentUserData") || "{}"
+        );
+        const updatedDesigns = [...(currentUserData.designs || []), res.data];
+        setDesigns(updatedDesigns);
+        setIsDialogOpen(false);
+        setToAccountNumber("");
+        setDesign("");
+        window.location.reload();
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -92,6 +96,7 @@ export const CreateDesign = () => {
               value={design}
               onChange={(e) => setDesign(e.target.value)}
               className="col-span-3"
+              maxLength={13}
             />
           </div>
           <div className="grid grid-cols-1 items-center gap-4">
@@ -103,6 +108,7 @@ export const CreateDesign = () => {
               value={toAccountNumber}
               onChange={(e) => setToAccountNumber(e.target.value)}
               className="col-span-3"
+              maxLength={10}
             />
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}

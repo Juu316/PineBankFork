@@ -85,3 +85,21 @@ export const createBankAccount = async (token: string) => {
     throw new Error(errText);
   }
 };
+
+export const deleteDesign = async (designId: string, token: string) => {
+  try {
+    const response = await axiosInstance.delete(`/design`, {
+      data: { designId },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errText =
+      error.response?.data || error.message || "Failed to delete design";
+    throw new Error(errText);
+  }
+};

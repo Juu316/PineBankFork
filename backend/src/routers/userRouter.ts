@@ -1,7 +1,6 @@
 import express from "express";
 import { getUser } from "../resolvers/user/getUser";
 import { Webhook } from "../resolvers/user/webhook";
-//import { getTransaction } from "../resolvers/transaction/getUsersTransaction";
 import { updateTransactionPassword } from "../resolvers/user/updateTransactionPassword";
 export const userRouter = express.Router();
 userRouter.put("/transaction-password/update", updateTransactionPassword);

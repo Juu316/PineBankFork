@@ -1,5 +1,4 @@
 "use client";
-
 import React, { Suspense } from "react";
 import { TabsDemo } from "./_components/Tabs";
 

@@ -8,10 +8,11 @@ import { transactionRouter } from "./routers/transactionRouter";
 import { clerkMiddleware } from "@clerk/express";
 import { designRouter } from "./routers/designRouter";
 import { exchangeRouter } from "./routers/exchangeRouter";
-// ...existing code...
-
+import { emailRouter } from "./routers/emailRouter";
+import { verifyRouter } from "./routers/verifyOtpRouter";
 dotenv.config();
 const app = express();
+const port = process.env.PORT;
 app.use(
   cors({
     origin: [
@@ -23,8 +24,6 @@ app.use(
   })
 );
 app.use(express.json());
-const port = process.env.PORT;
-
 app.use(clerkMiddleware());
 app.use("/exchange", exchangeRouter);
 app.use("/users", userRouter);
@@ -32,7 +31,8 @@ app.use("/account", accountRouter);
 app.use("/profile", userProfileRouter);
 app.use("/transaction", transactionRouter);
 app.use("/design", designRouter);
-
+app.use("/mail", emailRouter);
+app.use("/verify-otp", verifyRouter);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

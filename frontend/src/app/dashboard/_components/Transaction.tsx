@@ -6,11 +6,19 @@ interface TransactionProps {
   amount?: string;
   type?: string;
   reference?: string;
-  fromAccountId?: string;
   toAccountId?: string;
+  fromAccountId?: string;
+  balanceAfterTransaction?: string;
 }
 
-const Transaction: React.FC<TransactionProps> = ({ date, balance, amount, reference, type }) => {
+const Transaction: React.FC<TransactionProps> = ({
+  date,
+  balance,
+  amount,
+  reference,
+  type,
+  //balanceAfterTransaction,
+}) => {
   const { isVisible } = useVisibility();
   return (
     <>
@@ -22,19 +30,22 @@ const Transaction: React.FC<TransactionProps> = ({ date, balance, amount, refere
         <div className="flex flex-col">
           {isVisible ? (
             <div>
-              <div className={
-                `text-[1.5rem] ${type === "CREDIT" ? "text-green-500" : "text-red-500"}`
-              }>
-
+              <div
+                className={`text-[1.5rem] ${
+                  type === "CREDIT" ? "text-green-500" : "text-red-500"
+                }`}>
                 {type === "CREDIT" ? "+" : "-"} {amount}
               </div>
               <div>Үлд: {balance}</div>
             </div>
           ) : (
             <div>
-              <div className={
-                `text-[1.5rem] ${type === "CREDIT" ? "text-green-500" : "text-red-500"}`
-              }>****</div>
+              <div
+                className={`text-[1.5rem] ${
+                  type === "CREDIT" ? "text-green-500" : "text-red-500"
+                }`}>
+                ****
+              </div>
               <div>Үлд: **** </div>
             </div>
           )}

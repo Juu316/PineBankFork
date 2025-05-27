@@ -6,6 +6,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model OTP {
   id        String   @id @default(uuid())
   email     String
@@ -17,6 +18,7 @@ model OTP {
   @@index([email])
   @@map("otps")
 }
+
 model User {
   id                  String        @id
   email               String        @unique
@@ -30,14 +32,14 @@ model User {
 }
 
 model UserProfile {
-  id        String @id @default(uuid())
-  userId    String @unique
+  id        String  @id @default(uuid())
+  userId    String  @unique
   firstName String
   lastName  String
   address   String
   phone     String
   image     String?
-  user      User   @relation(fields: [userId], references: [id], onDelete:Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model BankAccount {
@@ -47,10 +49,10 @@ model BankAccount {
   balance          Float         @default(0.0)
   userId           String
   createdAt        DateTime      @default(now())
-  user             User          @relation(fields: [userId], references: [id], onDelete:Cascade)
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quickTransfersTo Design[]      @relation("QuickTransferTo")
   transactionsFrom Transaction[] @relation("FromAccount")
   transactionsTo   Transaction[] @relation("ToAccount")
-  quickTransfersTo Design[]      @relation("QuickTransferTo")
 }
 
 model Transaction {
@@ -62,19 +64,19 @@ model Transaction {
   status                  TransactionStatusEnum @default(PENDING)
   reference               String?
   balanceAfterTransaction Float?
-  fromAccount             BankAccount           @relation("FromAccount", fields: [fromAccountId], references: [id], onDelete:Cascade)
-  toAccount               BankAccount           @relation("ToAccount", fields: [toAccountId], references: [id], onDelete:Cascade)
+  fromAccount             BankAccount           @relation("FromAccount", fields: [fromAccountId], references: [id], onDelete: Cascade)
+  toAccount               BankAccount           @relation("ToAccount", fields: [toAccountId], references: [id], onDelete: Cascade)
 }
 
 model Design {
   id              String      @id @default(uuid())
   designName      String
-  toAccountNumber String
   toAccountId     String
   userId          String
   timestamp       DateTime    @default(now())
-  user            User        @relation(fields: [userId], references: [id], onDelete:Cascade)
-  toAccount       BankAccount @relation("QuickTransferTo", fields: [toAccountId], references: [id], onDelete:Cascade)
+  toAccountNumber String
+  toAccount       BankAccount @relation("QuickTransferTo", fields: [toAccountId], references: [id], onDelete: Cascade)
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum AccountEnum {

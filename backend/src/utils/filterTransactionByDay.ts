@@ -1,4 +1,4 @@
-import { TransactionType } from "../types";
+import { TransactionType } from "../types/types";
 
 export const filterByDateRange = (
   transactions: TransactionType[],

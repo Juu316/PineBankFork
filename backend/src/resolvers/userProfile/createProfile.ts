@@ -6,15 +6,15 @@ export const createProfile = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  try {    
+  try {
     const { userId } = getAuth(req);
-    
+
     if (!userId) {
       res.status(400).json({ message: "User ID is missing from the token" });
-      return
+      return;
     }
 
-    const { firstName, lastName, address, phone, image } = req.body;
+    const { firstName, lastName, address, phone } = req.body;
     const prisma = new PrismaClient();
 
     const user = await prisma.user.findUnique({
@@ -41,7 +41,6 @@ export const createProfile = async (
         lastName,
         address,
         phone,
-        image,
         user: {
           connect: { id: userId },
         },

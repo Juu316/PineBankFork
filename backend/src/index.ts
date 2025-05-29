@@ -10,9 +10,23 @@ import { designRouter } from "./routers/designRouter";
 import { exchangeRouter } from "./routers/exchangeRouter";
 import { emailRouter } from "./routers/emailRouter";
 import { verifyRouter } from "./routers/verifyOtpRouter";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
+async function checkConnection() {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    console.log("✅ Successfully connected to Neon database");
+  } catch (error) {
+    console.error("❌ Failed to connect to Neon database:", error);
+    process.exit(1);
+  }
+}
+
+checkConnection();
 app.use(
   cors({
     origin: [

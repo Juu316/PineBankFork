@@ -38,7 +38,7 @@ const Page = () => {
         if (!token) return;
         const profile = await getUserProfile(token);
         if (profile) {
-          router.replace("/dashboard");
+          router.push("/dashboard");
         }
       } catch (error) {
         console.log(error);

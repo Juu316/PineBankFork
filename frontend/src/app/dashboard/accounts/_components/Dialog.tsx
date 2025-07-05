@@ -10,34 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
-import { axiosInstance } from "@/lib/addedAxiosInstance";
-const createBankAccount = async (getToken: () => Promise<string | null>) => {
-  const token = await getToken();
-
-  if (!token) {
-    console.error("No token found.");
-    return false;
-  }
-
-  try {
-    await axiosInstance.post(
-      "/account",
-      { balance: 10000 },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log("Account created successfully!");
-    return true;
-  } catch (error) {
-    console.error("Error creating account:", error);
-    return false;
-  }
-};
+import { createBankAccount } from "@/lib/api";
 
 export function DialogDemo() {
   const [loading, setLoading] = useState(false);
@@ -59,7 +32,13 @@ export function DialogDemo() {
     setSuccess(null);
 
     try {
-      const isSuccess = await createBankAccount(getToken);
+      const token = await getToken();
+      if (!token) {
+        setError("Authentication failed. Please log in again.");
+        setLoading(false);
+        return;
+      }
+      const isSuccess = await createBankAccount(token);
 
       if (isSuccess) {
         setSuccess(true);

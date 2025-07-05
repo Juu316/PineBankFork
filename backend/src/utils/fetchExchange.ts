@@ -51,7 +51,7 @@ const fetchAndCacheRates = async () => {
 };
 
 // Fetch immediately on server start
-// fetchAndCacheRates();
+//fetchAndCacheRates();
 
 // Schedule to fetch every 23 hours
 cron.schedule("0 */23 * * *", fetchAndCacheRates);

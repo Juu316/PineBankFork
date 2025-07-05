@@ -19,24 +19,25 @@ const port = process.env.PORT;
 async function checkConnection() {
   try {
     await prisma.$queryRaw`SELECT 1`;
-    console.log("✅ Successfully connected to Neon database");
+    console.log("✅ Successfully connected to database");
   } catch (error) {
-    console.error("❌ Failed to connect to Neon database:", error);
+    console.error("❌ Failed to connect to database:", error);
     process.exit(1);
   }
 }
 
 checkConnection();
-app.use(
-  cors({
-    origin: [
-      "https://pine-bank.vercel.app",
-      "http://localhost:3000",
-      "https://pine-bank-fork.vercel.app",
-    ],
-    credentials: true,
-  })
-);
+app.use(cors({ origin: "*" }));
+// app.use(
+//   cors({
+//     origin: [
+//       "https://pine-bank.vercel.app",
+//       "http://localhost:3000",
+//       "https://pine-bank-fork.vercel.app",
+//     ],
+//     credentials: true,
+//   })
+// );
 app.use(express.json());
 app.use(clerkMiddleware());
 app.use("/exchange", exchangeRouter);
